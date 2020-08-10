@@ -1,0 +1,15 @@
+{
+  "name": "ergo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "analyze": "ts-node ./analyzer/index.ts"
+  },
+  "dependencies": {
+    "@types/node": "^14.0.27",
+    "svelte": "^3.24.1",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  }
+}
