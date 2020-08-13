@@ -1,10 +1,10 @@
 {
-  "name": "ergo",
+  "name": "volga",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./index.ts",
   "license": "MIT",
   "scripts": {
-    "analyze": "ts-node ./analyzer/index.ts"
+    "analyze": "ts-node ./index.ts"
   },
   "dependencies": {
     "@types/node": "^14.0.27",

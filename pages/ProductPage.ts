@@ -1,4 +1,4 @@
-import { Property, Component } from 'ecohtml'
+import { Property, Component } from '../core'
 
 @Component
 export class ProductPage {

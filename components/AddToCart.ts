@@ -1,4 +1,4 @@
-import { Property, Inject, Getter, Action, Component } from 'ecohtml'
+import { Property, Inject, Component } from 'volga'
 
 import { CartStore } from '../stores/cart'
 
@@ -9,11 +9,11 @@ export class AddToCart {
 
   @Inject(CartStore) cartStore: CartStore
 
-  @Getter hasInCart () {
+  get hasInCart () {
     return this.cartStore.has(this.productId)
   }
 
-  @Action onClick () {
+  onClick () {
     this.cartStore.add(this.productId)
   }
 }

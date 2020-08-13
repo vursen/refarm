@@ -1,4 +1,4 @@
-import { State, Getter, Action } from 'ergo'
+import { State, Getter, Action } from 'volga'
 
 export class CartStore {
   @State productIds: number[]

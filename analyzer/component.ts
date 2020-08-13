@@ -1,30 +1,69 @@
-import fs from 'fs'
-import path from 'path'
-import ts from 'typescript'
+import * as fs from 'fs'
+import * as path from 'path'
+import * as ts from 'typescript'
 import * as svelte from 'svelte/compiler'
 
 export class Component {
-  scriptAst: ReturnType<typeof ts.createSourceFile>
-  templateAst: ReturnType<typeof svelte.parse>
+  host: ts.CompilerHost
+  program: ts.Program
+  script: ts.SourceFile
+  template: ReturnType<typeof svelte.parse>
 
   constructor ({
+    host,
+    program,
     componentPath,
-    componentName,
-    componentSource
   }) {
-    this.scriptAst = ts.createSourceFile(
-      `${componentName}.ts`,
-      componentSource,
-      ts.ScriptTarget.Latest
-    )
+    this.host = host
+    this.program = program
 
-    const templatePath = `${path.dirname(componentPath)}/${componentName}.html`
-    const templateSource = fs.readFileSync(templatePath).toString()
+    this.script = this.program.getSourceFile(componentPath)
 
-    this.templateAst = svelte.parse(templateSource)
+    // const templatePath = `${path.dirname(componentPath)}/${path.basename(componentPath, '.ts')}.html`
+    // const templateSource = ts.sys.readFile(templatePath)
+
+    // this.template = svelte.parse(templateSource)
   }
 
-  getComponentsReferences() {
-    return this.scriptAst
+  getComponentClass () {
+    return getComponentClass(this.script)
   }
+
+  getReferencedComponents () {
+    return this.script.getChildren()
+      .map((node) => {
+        if (
+          ts.isExportDeclaration(node) &&
+          ts.isStringLiteral(node.moduleSpecifier)
+        ) {
+          return node.moduleSpecifier.text
+        }
+      })
+      .filter(Boolean)
+      .map((moduleName) => {
+        return ts.resolveModuleName(moduleName, this.script.fileName, {}, this.host)
+      })
+      .map(({ resolvedModule }) => {
+        return this.program.getSourceFile(resolvedModule.resolvedFileName)
+      })
+      .filter((sourceFile) => {
+        return getComponentClass(sourceFile)
+      })
+  }
+}
+
+function getComponentClass(sourceFile: ts.SourceFile) {
+  return sourceFile.statements.find((node) => {
+    if (!ts.isClassDeclaration(node)) {
+      return false
+    }
+
+    if (node.name.text !== path.basename(sourceFile.fileName, '.ts')) {
+      return false
+    }
+
+    return node.decorators.some(({ expression }) => {
+      return ts.isIdentifier(expression) && expression.text === 'Component'
+    })
+  })
 }

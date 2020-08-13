@@ -1,16 +1,14 @@
-import fs from 'fs'
-import path from 'path'
+import * as fs from 'fs'
+import * as path from 'path'
 
 import { Page } from './page'
 
 const pagePath = `${__dirname}/../pages/ProductPage.ts`
-const pageName = path.basename(pagePath, '.ts')
-const pageSource = fs.readFileSync(pagePath).toString()
+// const pageName = path.basename(pagePath, '.ts')
+// const pageSource = fs.readFileSync(pagePath).toString()
 
 const page = new Page({
-  pagePath,
-  pageName,
-  pageSource
+  pagePath
 })
 
-console.log(page.analyze())
+page.analyze()
