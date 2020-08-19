@@ -16,7 +16,8 @@ export class Page {
   }
 
   analyze () {
-    console.log('imported components', this.pageComponent.getImportedComponents())
-    console.log('component class', this.pageComponent.getComponentClass())
+    console.log('Imported components', this.pageComponent.getImportedComponents())
+    console.log('Component class', this.pageComponent.getComponentClass())
+    console.log('Component properties', this.pageComponent.getProperties())
   }
 }

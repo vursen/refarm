@@ -5,8 +5,8 @@ import * as svelte from 'svelte/compiler'
 import { PageContext } from './page-context'
 
 export class Component {
-  private _cachedScriptAst: ts.SourceFile
-  private _cachedTemplateAst: ReturnType<typeof svelte.parse>
+  private _cachedScript: ts.SourceFile
+  private _cachedTemplate: ReturnType<typeof svelte.parse>
 
   constructor (
     public templatePath: string,
@@ -14,19 +14,19 @@ export class Component {
   ) {}
 
   get template () {
-    if (this._cachedTemplateAst) {
-      return this._cachedTemplateAst
+    if (this._cachedTemplate) {
+      return this._cachedTemplate
     }
 
-    return this._cachedTemplateAst = svelte.parse(ts.sys.readFile(this.templatePath))
+    return this._cachedTemplate = svelte.parse(ts.sys.readFile(this.templatePath))
   }
 
   get script () {
-    if (this._cachedScriptAst) {
-      return this._cachedScriptAst
+    if (this._cachedScript) {
+      return this._cachedScript
     }
 
-    return this._cachedScriptAst = this.template.html.children
+    return this._cachedScript = this.template.html.children
       .filter((node) => {
         return (
           node.name === 'link' &&
@@ -58,47 +58,32 @@ export class Component {
       })
   }
 
+  getProperties () {
+    const componentClass = this.getComponentClass()
+
+    return getComponentProperties(componentClass).map(({ name }) => (name as ts.Identifier).text)
+  }
+
   getComponentClass () {
     return getComponentClass(this.script)
   }
-
-  // getReferencedComponents () {
-  //   return this.script.getChildren()
-  //     .map((node) => {
-  //       if (
-  //         ts.isExportDeclaration(node) &&
-  //         ts.isStringLiteral(node.moduleSpecifier)
-  //       ) {
-  //         return node.moduleSpecifier.text
-  //       }
-  //     })
-  //     .filter(Boolean)
-  //     .map((moduleName) => {
-  //       return ts.resolveModuleName(moduleName, this.script.fileName, {}, this.host)
-  //     })
-  //     .map(({ resolvedModule }) => {
-  //       return this.program.getSourceFile(resolvedModule.resolvedFileName)
-  //     })
-  //     .filter((sourceFile) => {
-  //       return getComponentClass(sourceFile)
-  //     })
-  // }
 }
 
 function getComponentClass(sourceFile: ts.SourceFile) {
-  return sourceFile.statements.find((node) => {
-    if (!ts.isClassDeclaration(node)) {
-      return false
-    }
+  return sourceFile.statements
+    .filter((node): node is ts.ClassDeclaration => {
+      return ts.isClassDeclaration(node)
+    })
+    .find((node) => {
+      return node.name.text === path.basename(sourceFile.fileName, '.ts')
+    })
+}
 
-    if (node.name.text !== path.basename(sourceFile.fileName, '.ts')) {
-      return false
-    }
-
-    return true
-
-    // return node.decorators.some(({ expression }) => {
-    //   return ts.isIdentifier(expression) && expression.text === 'Component'
-    // })
-  })
+function getComponentProperties (componentClass: ts.ClassDeclaration) {
+  return componentClass.members
+    .filter((member) => {
+      return member.decorators.some(({ expression }) => {
+        return ts.isIdentifier(expression) && expression.text === 'Property'
+      })
+    })
 }
