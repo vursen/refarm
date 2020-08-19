@@ -1,7 +1,7 @@
-export function Property(target, propertyKey) {
+export function Property (target, propertyKey) {
   return target[propertyKey]
 }
 
-export function Component (constructor) {
-
+export function Inject (target, propertyKey) {
+  return target[propertyKey]
 }
