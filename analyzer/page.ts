@@ -2,26 +2,21 @@ import { Component } from './component'
 
 import * as ts from 'typescript'
 
+import { PageContext } from './page-context'
+
 export class Page {
-  host: ts.CompilerHost
-  program: ts.Program
-  component: Component
+  pagePath: string
+  pageContext: PageContext
+  pageComponent: Component
 
-  constructor ({
-    pagePath
-  }) {
-    this.host = ts.createCompilerHost({})
-
-    this.program = ts.createProgram([pagePath], {})
-
-    this.component = new Component({
-      host: this.host,
-      program: this.program,
-      componentPath: pagePath
-    })
+  constructor (pagePath: string) {
+    this.pagePath = pagePath
+    this.pageContext = new PageContext(pagePath)
+    this.pageComponent = new Component(pagePath, this.pageContext)
   }
 
   analyze () {
-    console.log(this.component.getComponentClass())
+    console.log('imported components', this.pageComponent.getImportedComponents())
+    console.log('component class', this.pageComponent.getComponentClass())
   }
 }

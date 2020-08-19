@@ -1,8 +1,7 @@
-import { Property, Inject, Component } from 'volga'
+import { Property, Inject } from '../core'
 
 import { CartStore } from '../stores/cart'
 
-@Component
 export class AddToCart {
   @Property productId: number
   @Property productTitle: string
