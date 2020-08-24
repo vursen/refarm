@@ -1,7 +1,5 @@
 import { Component } from './component'
 
-import * as ts from 'typescript'
-
 import { PageContext } from './page-context'
 
 export class Page {

@@ -1,9 +1,9 @@
-import { State, Getter, Action } from 'volga'
+import { State, Action } from '../core'
 
 export class CartStore {
   @State productIds: number[]
 
-  @Getter has (productId: number) {
+  has (productId: number) {
     return this.productIds.find((id) => productId === id)
   }
 

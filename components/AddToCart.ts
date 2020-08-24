@@ -1,13 +1,14 @@
-import { Property, Inject } from '../core'
+import { Property, Computed, Inject } from '../core'
 
 import { CartStore } from '../stores/cart'
 
 export class AddToCart {
+  @Inject cartStore: CartStore
+
   @Property productId: number
   @Property productTitle: string
 
-  @Inject(CartStore) cartStore: CartStore
-
+  @Computed
   get hasInCart () {
     return this.cartStore.has(this.productId)
   }
