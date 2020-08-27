@@ -1,6 +1,13 @@
 <link rel="script" href="./AddToCart.ts" />
 
-<div class="add-to-cart" on:click={onClick}>
+<link rel="stylesheet" href="./AddToCart.css" />
+
+<div
+  class="add-to-cart"
+  on:click={onClick}
+  on:did-insert={onDidInsert}
+  on:did-remove={onDidRemove}
+>
   {#if hasInCart}
   Перейти в корзину
   {:else}

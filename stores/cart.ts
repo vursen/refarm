@@ -1,7 +1,7 @@
 import { State, Action } from '../core'
 
 export class CartStore {
-  @State productIds: number[]
+  @State productIds: number[] = []
 
   has (productId: number) {
     return this.productIds.find((id) => productId === id)

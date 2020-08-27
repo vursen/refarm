@@ -1,14 +1,16 @@
 // import * as path from 'path'
 import * as ts from 'typescript'
 
-import { PageContext } from './page-context'
+import { PageContext } from '../page-context'
+
+import { StateDefinition } from './state-definition'
+import { ActionDefinition } from './action-definition'
 
 export class Store {
   ast: ts.SourceFile = null
 
-  state = new Map()
-
-  actions = new Map()
+  stateDefinitions: Map<string, StateDefinition> = new Map()
+  actionDefinitions: Map<string, ActionDefinition> = new Map()
 
   constructor (
     public storePath: string,
@@ -26,6 +28,8 @@ export class Store {
         this.visitClassDeclaration(node)
       }
     })
+
+    this.visitActionDefinitions()
   }
 
   visitClassDeclaration (node: ts.ClassDeclaration) {
@@ -40,20 +44,44 @@ export class Store {
     })
   }
 
+  /**
+   * Example:
+   *
+   * ```
+   * @Property productIds = []
+   * ```
+   */
   visitStatePropertyDeclaration (node: ts.PropertyDeclaration) {
-    const name = node.name as ts.StringLiteral
+    const name = (node.name as ts.StringLiteral).text
 
-    this.state.set(name.text, {
-      node
-    })
+    this.stateDefinitions.set(
+      name,
+      new StateDefinition(node, this)
+    )
   }
 
+  /**
+   * Example:
+   *
+   * ```
+   * @Action add (...) {
+   *  ...
+   * }
+   * ```
+   */
   visitActionMethodDeclaration (node: ts.MethodDeclaration) {
-    const name = node.name as ts.StringLiteral
+    const name = (node.name as ts.StringLiteral).text
 
-    this.actions.set(name.text, {
-      node
-    })
+    this.actionDefinitions.set(
+      name,
+      new ActionDefinition(node, this)
+    )
+  }
+
+  visitActionDefinitions () {
+    for (const [_name, definition] of this.actionDefinitions) {
+      definition.visit()
+    }
   }
 
   /**
@@ -79,13 +107,3 @@ export class Store {
     })
   }
 }
-
-// function findStoreClassDeclaration(sourceFile: ts.SourceFile) {
-//   return sourceFile.statements
-//     .filter((node): node is ts.ClassDeclaration => {
-//       return ts.isClassDeclaration(node)
-//     })
-//     .find((node) => {
-//       return node.name.text === path.basename(sourceFile.fileName, '.ts')
-//     })
-// }
