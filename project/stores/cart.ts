@@ -1,4 +1,4 @@
-import { State, Action, Getter } from '../core'
+import { State, Action, Getter } from '@runtime/core'
 
 export class CartStore {
   @State productIds: number[] = []

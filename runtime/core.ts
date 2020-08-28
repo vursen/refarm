@@ -10,6 +10,10 @@ export function State (target, propertyKey) {
   return target[propertyKey]
 }
 
-export function Computed (target, propertyKey) {
+export function Getter (target, propertyKey) {
+  return target[propertyKey]
+}
+
+export function Action (target, propertyKey) {
   return target[propertyKey]
 }

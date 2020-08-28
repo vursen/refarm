@@ -1,6 +1,6 @@
 import * as ts from 'typescript'
 
-import { Store } from './store'
+import { Store } from '.'
 import { StateDefinition } from './state-definition'
 
 export class ActionDefinition {

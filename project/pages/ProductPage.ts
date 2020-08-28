@@ -1,4 +1,4 @@
-import { Property } from '../core'
+import { Property } from '@runtime/core'
 
 export class ProductPage {
   @Property productId: number

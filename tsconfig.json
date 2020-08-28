@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "paths": {
+      "@project/*": [
+        "project/*"
+      ],
+      "@runtime/*": [
+        "runtime/*"
+      ],
+      "@analyzer/*": [
+        "analyzer/*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts"
+  ]
+}
