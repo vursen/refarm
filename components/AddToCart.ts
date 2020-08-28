@@ -8,7 +8,6 @@ export class AddToCart {
   @Property productId: number
   @Property productTitle: string
 
-  @Computed
   get hasInCart () {
     return this.cartStore.has(this.productId)
   }
