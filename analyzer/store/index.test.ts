@@ -13,29 +13,42 @@ describe('store', () => {
     pageContext
   )
 
+  const {
+    stateDefinitions,
+    actionDefinitions
+  } = store
+
   describe('visitor', () => {
     it('collects action definitions', () => {
-      expect(store.actionDefinitions.size).toBe(2)
-      expect(store.actionDefinitions.has('add')).toBe(true)
-      expect(store.actionDefinitions.has('remove')).toBe(true)
+      expect(actionDefinitions.size)
+        .toBe(2)
+
+      expect(actionDefinitions.has('add'))
+        .toBe(true)
+
+      expect(actionDefinitions.has('remove'))
+        .toBe(true)
     })
 
     it('collects state definitions', () => {
-      expect(store.stateDefinitions.size).toBe(1)
-      expect(store.stateDefinitions.has('productIds')).toBe(true)
+      expect(stateDefinitions.size)
+        .toBe(1)
+
+      expect(stateDefinitions.has('productIds'))
+        .toBe(true)
     })
 
-    it('collects changed state definitions in the action method', () => {
-      const { changedStateDefinitions } = store.actionDefinitions.get('add')
+    it('collects changed state definitions in action methods', () => {
+      expect(actionDefinitions.get('add').changedStateDefinitions)
+        .toContain(stateDefinitions.get('productIds'))
 
-      expect(changedStateDefinitions).toContain(store.stateDefinitions.get('productIds'))
-      expect(changedStateDefinitions.size).toBe(1)
+      expect(actionDefinitions.get('remove').changedStateDefinitions)
+        .toContain(stateDefinitions.get('productIds'))
     })
 
-    it('collects called action definitions in the action method', () => {
-      const { calledActionDefinitions } = store.actionDefinitions.get('add')
-
-      expect(calledActionDefinitions.size).toBe(0)
+    it('collects called action definitions in action methods', () => {
+      expect(actionDefinitions.get('add').calledActionDefinitions.size)
+        .toBe(0)
     })
   })
 })

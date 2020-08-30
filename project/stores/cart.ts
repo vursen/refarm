@@ -14,7 +14,7 @@ export class CartStore {
 
   @Action
   add (productId: number) {
-    this.productIds.push(productId)
+    this.productIds = [...this.productIds, productId]
   }
 
   @Action
