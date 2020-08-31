@@ -1,4 +1,4 @@
-import * as ts from 'typescript'
+import * as ts from 'ts-morph'
 
 import { Store } from '.'
 
@@ -9,6 +9,6 @@ export class StateDefinition {
     public node: ts.PropertyDeclaration,
     public store: Store
   ) {
-    this.name = (node.name as ts.StringLiteral).text
+    this.name = node.getName()
   }
 }

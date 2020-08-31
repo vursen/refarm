@@ -1,5 +1,11 @@
-// import * as path from 'path'
-import * as ts from 'typescript'
+import {
+  SourceFile,
+  Node,
+  ClassDeclaration,
+  PropertyDeclaration,
+ } from 'ts-morph'
+
+import * as ts from 'ts-morph'
 
 import { PageContext } from '../page-context'
 
@@ -7,7 +13,7 @@ import { StateDefinition } from './state-definition'
 import { ActionDefinition } from './action-definition'
 
 export class Store {
-  ast: ts.SourceFile = null
+  ast: ts.SourceFile
 
   stateDefinitions: Map<string, StateDefinition> = new Map()
   actionDefinitions: Map<string, ActionDefinition> = new Map()
@@ -16,7 +22,7 @@ export class Store {
     public storePath: string,
     public pageContext: PageContext
   ) {
-    this.ast = this.pageContext.getSourceFile(this.storePath)
+    this.ast = this.pageContext.addSourceFile(this.storePath)
 
     this.visit()
   }
@@ -24,7 +30,7 @@ export class Store {
   visit () {
     this.ast.forEachChild((node) => {
       // TODO: Check on it is a store class declaration
-      if (ts.isClassDeclaration(node)) {
+      if (Node.isClassDeclaration(node)) {
         this.visitClassDeclaration(node)
       }
     })
@@ -33,7 +39,7 @@ export class Store {
   }
 
   visitClassDeclaration (node: ts.ClassDeclaration) {
-    node.members.forEach((member) => {
+    node.forEachChild((member) => {
       if (this.isActionMethodDeclaration(member)) {
         this.visitActionMethodDeclaration(member)
       }
@@ -52,7 +58,7 @@ export class Store {
    * ```
    */
   visitStatePropertyDeclaration (node: ts.PropertyDeclaration) {
-    const name = (node.name as ts.StringLiteral).text
+    const name = node.getName()
 
     this.stateDefinitions.set(
       name,
@@ -70,7 +76,7 @@ export class Store {
    * ```
    */
   visitActionMethodDeclaration (node: ts.MethodDeclaration) {
-    const name = (node.name as ts.StringLiteral).text
+    const name = node.getName()
 
     this.actionDefinitions.set(
       name,
@@ -87,23 +93,23 @@ export class Store {
   /**
    * Is the node a state property declaration?
    */
-  private isStatePropertyDeclaration (node: ts.Declaration): node is ts.PropertyDeclaration {
-    return ts.isPropertyDeclaration(node) && this.hasDecorator(node, 'State')
+  private isStatePropertyDeclaration (node: ts.Node): node is ts.PropertyDeclaration {
+    return ts.Node.isPropertyDeclaration(node) && node.getDecorator('State') !== undefined
   }
 
   /**
    * Is the node an action method declaration?
    */
-  private isActionMethodDeclaration (node: ts.Declaration): node is ts.MethodDeclaration {
-    return ts.isMethodDeclaration(node) && this.hasDecorator(node, 'Action')
+  private isActionMethodDeclaration (node: ts.Node): node is ts.MethodDeclaration {
+    return ts.Node.isMethodDeclaration(node) && node.getDecorator('Action') !== undefined
   }
 
   /**
    * Does the node have the decorator?
    */
-  private hasDecorator (node: ts.Node, decoratorName: string) {
-    return node.decorators?.some(({ expression }) => {
-      return ts.isIdentifier(expression) && expression.text === decoratorName
-    })
-  }
+  // private hasDecorator (node: ts.Node, decoratorName: string) {
+  //   return node.decorators?.some(({ expression }) => {
+  //     return ts.isIdentifier(expression) && expression.text === decoratorName
+  //   })
+  // }
 }

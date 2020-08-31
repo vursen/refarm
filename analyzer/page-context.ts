@@ -1,20 +1,17 @@
-import * as ts from 'typescript'
+import * as path from 'path'
+import { Project } from 'ts-morph';
 
 export class PageContext {
-  host: ts.CompilerHost
-  program: ts.Program
+  project: Project
 
   constructor (_pagePath: string) {
-    this.host = ts.createCompilerHost({
-
+    this.project = new Project({
+      tsConfigFilePath: path.join(__dirname, '../tsconfig.json'),
+      addFilesFromTsConfig: false
     })
   }
 
-  resolveModulePath (moduleName: string, basePath: string) {
-    return ts.resolveModuleName(moduleName, basePath, {}, this.host)
-  }
-
-  getSourceFile (path: string) {
-    return this.host.getSourceFile(path, ts.ScriptTarget.ESNext)
+  addSourceFile (filePath: string) {
+    return this.project.addSourceFileAtPath(filePath)
   }
 }

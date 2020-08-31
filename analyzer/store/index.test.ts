@@ -38,11 +38,11 @@ describe('store', () => {
         .toBe(true)
     })
 
-    it('collects changed state definitions in action methods', () => {
-      expect(actionDefinitions.get('add').changedStateDefinitions)
+    it('collects affected state definitions in action methods', () => {
+      expect(actionDefinitions.get('add').affectedStateDefinitions)
         .toContain(stateDefinitions.get('productIds'))
 
-      expect(actionDefinitions.get('remove').changedStateDefinitions)
+      expect(actionDefinitions.get('remove').affectedStateDefinitions)
         .toContain(stateDefinitions.get('productIds'))
     })
 
