@@ -1,4 +1,4 @@
-import * as ts from 'ts-morph'
+import * as tsMorph from 'ts-morph'
 
 import { Store } from '.'
 
@@ -6,7 +6,7 @@ export class StateDefinition {
   name: string
 
   constructor (
-    public node: ts.PropertyDeclaration,
+    public node: tsMorph.PropertyDeclaration,
     public store: Store
   ) {
     this.name = node.getName()

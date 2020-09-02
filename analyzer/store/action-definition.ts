@@ -1,4 +1,4 @@
-import * as ts from 'ts-morph'
+import * as tsMorph from 'ts-morph'
 
 import { Store } from '.'
 import { StateDefinition } from './state-definition'
@@ -28,64 +28,59 @@ export class ActionDefinition {
   calledActionDefinitions: Set<ActionDefinition> = new Set()
 
   constructor (
-    public node: ts.MethodDeclaration,
+    public node: tsMorph.MethodDeclaration,
     public store: Store
   ) {
     this.name = node.getName()
   }
 
   visit () {
-
+    this.node.getBody().getDescendantsOfKind(tsMorph.SyntaxKind.BinaryExpression).forEach((node) => {
+      if (
+        node.getParentIfKind(tsMorph.SyntaxKind.ExpressionStatement) &&
+        this.isAssignmentExpression(node)
+      ) {
+        this.visitAssignmentExpression(node)
+      }
+    })
   }
 
-  // TODO: Refactor
-  // visitAssignmentExpression (node: ts.BinaryExpression) {
-  //   const target = this.getTargetOfAssignmentExpression(node)
+  visitAssignmentExpression (node: tsMorph.AssignmentExpression) {
+    const targetNode = this.getTargetOfAssignmentExpression(node)
 
-  //   if (this.isStatePropertyAccessExpression(target)) {
-  //     const stateDefinition = this.store.stateDefinitions.get(target.name.text)
+    if (this.isStatePropertyAccessExpression(targetNode)) {
+      const stateDefinition = this.store.stateDefinitions.get(targetNode.getName())
 
-  //     this.affectedStateDefinitions.add(stateDefinition)
-  //   }
-  // }
+      this.affectedStateDefinitions.add(stateDefinition)
+    }
+  }
 
-  // private isAssignmentExpression (node: ts.Expression): node is ts.BinaryExpression {
-  //   return (
-  //     ts.isBinaryExpression(node) &&
-  //     this.isAssignmentOperator(node.operatorToken.kind)
-  //   )
-  // }
+  private isAssignmentExpression (node: tsMorph.BinaryExpression): node is tsMorph.AssignmentExpression {
+    const operatorToken = node.getOperatorToken()
 
-  // private isAssignmentOperator (token: ts.SyntaxKind) {
-  //   return (
-  //     token >= ts.SyntaxKind.FirstAssignment &&
-  //     token <= ts.SyntaxKind.LastAssignment
-  //   )
-  // }
+    return (
+      operatorToken.getKind() >= tsMorph.SyntaxKind.FirstAssignment &&
+      operatorToken.getKind() <= tsMorph.SyntaxKind.LastAssignment
+    )
+  }
 
-  // // TODO: Refactor
-  // private getTargetOfAssignmentExpression (node: ts.BinaryExpression) {
-  //   let target = node.left
+  private getTargetOfAssignmentExpression (node: tsMorph.AssignmentExpression) {
+    let target = node.getLeft()
 
-  //   while (
-  //     // @ts-ignore
-  //     target.expression &&
-  //     // @ts-ignore
-  //     target.expression.kind !== ts.SyntaxKind.ThisKeyword
-  //   ) {
-  //     // @ts-ignore
-  //     target = node.expression
-  //   }
+    while (
+      tsMorph.Node.isLeftHandSideExpressionedNode(target) &&
+      tsMorph.Node.isThisExpression(target.getExpression()) === false
+    ) {
+      target = target.getExpression()
+    }
 
-  //   return target
-  // }
+    return target
+  }
 
-  // // TODO: Refactor
-  // private isStatePropertyAccessExpression (node: ts.Node): node is ts.PropertyAccessExpression {
-  //   return (
-  //     ts.isPropertyAccessExpression(node) &&
-  //     ts.isIdentifier(node.name) &&
-  //     this.store.stateDefinitions.has(node.name.text)
-  //   )
-  // }
+  private isStatePropertyAccessExpression (node: tsMorph.Node): node is tsMorph.PropertyAccessExpression {
+    return (
+      tsMorph.Node.isPropertyAccessExpression(node) &&
+      this.store.stateDefinitions.has(node.getName())
+    )
+  }
 }

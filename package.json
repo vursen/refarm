@@ -4,7 +4,8 @@
   "main": "./index.ts",
   "license": "MIT",
   "scripts": {
-    "analyze": "ts-node ./index.ts"
+    "analyze": "ts-node ./index.ts",
+    "debug": "node --inspect ./node_modules/.bin/jest"
   },
   "dependencies": {
     "svelte": "3.24.1",

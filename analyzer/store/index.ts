@@ -1,11 +1,4 @@
-import {
-  SourceFile,
-  Node,
-  ClassDeclaration,
-  PropertyDeclaration,
- } from 'ts-morph'
-
-import * as ts from 'ts-morph'
+import * as tsMorph from 'ts-morph'
 
 import { PageContext } from '../page-context'
 
@@ -13,7 +6,7 @@ import { StateDefinition } from './state-definition'
 import { ActionDefinition } from './action-definition'
 
 export class Store {
-  ast: ts.SourceFile
+  ast: tsMorph.SourceFile
 
   stateDefinitions: Map<string, StateDefinition> = new Map()
   actionDefinitions: Map<string, ActionDefinition> = new Map()
@@ -30,7 +23,7 @@ export class Store {
   visit () {
     this.ast.forEachChild((node) => {
       // TODO: Check on it is a store class declaration
-      if (Node.isClassDeclaration(node)) {
+      if (tsMorph.Node.isClassDeclaration(node)) {
         this.visitClassDeclaration(node)
       }
     })
@@ -38,7 +31,7 @@ export class Store {
     this.visitActionDefinitions()
   }
 
-  visitClassDeclaration (node: ts.ClassDeclaration) {
+  visitClassDeclaration (node: tsMorph.ClassDeclaration) {
     node.forEachChild((member) => {
       if (this.isActionMethodDeclaration(member)) {
         this.visitActionMethodDeclaration(member)
@@ -57,7 +50,7 @@ export class Store {
    * @Property productIds = []
    * ```
    */
-  visitStatePropertyDeclaration (node: ts.PropertyDeclaration) {
+  visitStatePropertyDeclaration (node: tsMorph.PropertyDeclaration) {
     const name = node.getName()
 
     this.stateDefinitions.set(
@@ -75,7 +68,7 @@ export class Store {
    * }
    * ```
    */
-  visitActionMethodDeclaration (node: ts.MethodDeclaration) {
+  visitActionMethodDeclaration (node: tsMorph.MethodDeclaration) {
     const name = node.getName()
 
     this.actionDefinitions.set(
@@ -93,23 +86,18 @@ export class Store {
   /**
    * Is the node a state property declaration?
    */
-  private isStatePropertyDeclaration (node: ts.Node): node is ts.PropertyDeclaration {
-    return ts.Node.isPropertyDeclaration(node) && node.getDecorator('State') !== undefined
+  private isStatePropertyDeclaration (node: tsMorph.Node): node is tsMorph.PropertyDeclaration {
+    return (
+      tsMorph.Node.isPropertyDeclaration(node) && node.getDecorator('State') !== undefined
+    )
   }
 
   /**
    * Is the node an action method declaration?
    */
-  private isActionMethodDeclaration (node: ts.Node): node is ts.MethodDeclaration {
-    return ts.Node.isMethodDeclaration(node) && node.getDecorator('Action') !== undefined
+  private isActionMethodDeclaration (node: tsMorph.Node): node is tsMorph.MethodDeclaration {
+    return (
+      tsMorph.Node.isMethodDeclaration(node) && node.getDecorator('Action') !== undefined
+    )
   }
-
-  /**
-   * Does the node have the decorator?
-   */
-  // private hasDecorator (node: ts.Node, decoratorName: string) {
-  //   return node.decorators?.some(({ expression }) => {
-  //     return ts.isIdentifier(expression) && expression.text === decoratorName
-  //   })
-  // }
 }
