@@ -1,24 +1,44 @@
 import { State, Action, Getter } from '@runtime/core'
 
 export class CartStore {
-  @State productIds: number[] = []
+  @State items = {}
 
-  constructor ({ productIds }) {
-    this.productIds = productIds
+  constructor ({ items }) {
+    this.items = items
   }
 
   @Getter
-  has (productId: number) {
-    return this.productIds.find((id) => productId === id)
+  hasItem (productId: number) {
+    return Boolean(this.items[productId])
+  }
+
+  @Getter
+  getItem (productId: number) {
+    return this.items[productId]
+  }
+
+  @Getter
+  getItemCount (productId: number) {
+    return this.getItem(productId)?.count
   }
 
   @Action
-  add (productId: number) {
-    this.productIds = [...this.productIds, productId]
+  addItem (productId: number) {
+    if (this.hasItem(productId)) {
+      this.items[productId].count += 1
+      return
+    }
+
+    this.items[productId] = { productId, count: 1 }
   }
 
   @Action
-  remove (productId: number) {
-    this.productIds = this.productIds.filter((id) => productId !== id)
+  removeItem (productId: number) {
+    if (this.getItemCount(productId) > 1) {
+      this.items[productId].count -= 1
+      return
+    }
+
+    this.items[productId] = undefined
   }
 }

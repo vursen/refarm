@@ -6,9 +6,9 @@
   class="add-to-cart"
   on:click={onClick}
 >
-  {#if hasInCart}
-  Перейти в корзину
+  {#if hasCartItem}
+  Добавлено {cartItemCount} шт
   {:else}
-  Добавить в корзину {productTitle}
+  Добавить в корзину
   {/if}
 </div>

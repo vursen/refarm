@@ -8,11 +8,15 @@ export class AddToCart {
   @Property productId: number
   @Property productTitle: string
 
-  get hasInCart () {
-    return this.cartStore.has(this.productId)
+  get hasCartItem () {
+    return this.cartStore.hasItem(this.productId)
+  }
+
+  get cartItemCount () {
+    return this.cartStore.getItemCount(this.productId)
   }
 
   onClick () {
-    this.cartStore.add(this.productId)
+    this.cartStore.addItem(this.productId)
   }
 }

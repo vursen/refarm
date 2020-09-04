@@ -32,17 +32,30 @@ export class ActionDefinition {
     public store: Store
   ) {
     this.name = node.getName()
+
+    console.log(node.getLocals())
   }
 
   visit () {
-    this.node.getBody().getDescendantsOfKind(tsMorph.SyntaxKind.BinaryExpression).forEach((node) => {
-      if (
-        node.getParentIfKind(tsMorph.SyntaxKind.ExpressionStatement) &&
-        this.isAssignmentExpression(node)
-      ) {
-        this.visitAssignmentExpression(node)
+    this.node.getBody().forEachDescendant((node) => {
+      if (tsMorph.Node.isBinaryExpression(node)) {
+        this.visitBinaryExpression(node)
+      }
+
+      if (tsMorph.Node.isCallExpression(node)) {
+        this.visitCallExpression(node)
       }
     })
+  }
+
+  visitCallExpression (node: tsMorph.CallExpression) {
+    // TODO: Implement
+  }
+
+  visitBinaryExpression (node: tsMorph.BinaryExpression) {
+    if (this.isAssignmentExpression(node)) {
+      this.visitAssignmentExpression(node)
+    }
   }
 
   visitAssignmentExpression (node: tsMorph.AssignmentExpression) {
@@ -77,9 +90,14 @@ export class ActionDefinition {
     return target
   }
 
+  private isActionMethodCallExpression (node: tsMorph.Node): node is tsMorph.CallExpression {
+    return false
+  }
+
   private isStatePropertyAccessExpression (node: tsMorph.Node): node is tsMorph.PropertyAccessExpression {
     return (
       tsMorph.Node.isPropertyAccessExpression(node) &&
+      tsMorph.Node.isThisExpression(node.getExpression()) &&
       this.store.stateDefinitions.has(node.getName())
     )
   }
