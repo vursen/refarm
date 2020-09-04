@@ -1,4 +1,4 @@
-import { State, Inject, Getter } from '@runtime/core'
+import { State, Inject, Getter } from '@retro/runtime/core'
 
 import { CartStore } from './cart'
 

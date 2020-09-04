@@ -1,4 +1,4 @@
-import { State, Action, Getter } from '@runtime/core'
+import { State, Action, Getter } from '@retro/runtime/core'
 
 export class CartStore {
   @State items = {}
