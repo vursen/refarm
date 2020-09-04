@@ -8,9 +8,8 @@ describe('store', () => {
     path.join(__dirname, '../../project/pages/ProductPage.ts')
   )
 
-  const store = new Store(
-    path.join(__dirname, '../../project/stores/cart.ts'),
-    pageContext
+  const store = pageContext.addStoreAtPath(
+    path.join(__dirname, '../../project/stores/cart.ts')
   )
 
   const {
@@ -23,10 +22,10 @@ describe('store', () => {
       expect(actionDefinitions.size)
         .toBe(2)
 
-      expect(actionDefinitions.has('add'))
+      expect(actionDefinitions.has('addItem'))
         .toBe(true)
 
-      expect(actionDefinitions.has('remove'))
+      expect(actionDefinitions.has('removeItem'))
         .toBe(true)
     })
 
@@ -34,20 +33,20 @@ describe('store', () => {
       expect(stateDefinitions.size)
         .toBe(1)
 
-      expect(stateDefinitions.has('productIds'))
+      expect(stateDefinitions.has('items'))
         .toBe(true)
     })
 
     it('collects affected state definitions in action methods', () => {
-      expect(actionDefinitions.get('add').affectedStateDefinitions)
-        .toContain(stateDefinitions.get('productIds'))
+      expect(actionDefinitions.get('addItem').affectedStateDefinitions)
+        .toContain(stateDefinitions.get('items'))
 
-      expect(actionDefinitions.get('remove').affectedStateDefinitions)
-        .toContain(stateDefinitions.get('productIds'))
+      expect(actionDefinitions.get('removeItem').affectedStateDefinitions)
+        .toContain(stateDefinitions.get('items'))
     })
 
     it('collects called action definitions in action methods', () => {
-      expect(actionDefinitions.get('add').calledActionDefinitions.size)
+      expect(actionDefinitions.get('addItem').calledActionDefinitions.size)
         .toBe(0)
     })
   })

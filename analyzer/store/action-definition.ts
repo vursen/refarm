@@ -32,8 +32,6 @@ export class ActionDefinition {
     public store: Store
   ) {
     this.name = node.getName()
-
-    console.log(node.getLocals())
   }
 
   visit () {

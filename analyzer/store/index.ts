@@ -6,19 +6,13 @@ import { StateDefinition } from './state-definition'
 import { ActionDefinition } from './action-definition'
 
 export class Store {
-  ast: tsMorph.SourceFile
-
   stateDefinitions: Map<string, StateDefinition> = new Map()
   actionDefinitions: Map<string, ActionDefinition> = new Map()
 
   constructor (
-    public storePath: string,
+    public ast: tsMorph.SourceFile,
     public pageContext: PageContext
-  ) {
-    this.ast = this.pageContext.addSourceFile(this.storePath)
-
-    this.visit()
-  }
+  ) {}
 
   visit () {
     this.ast.forEachChild((node) => {
