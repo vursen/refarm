@@ -18,7 +18,7 @@ describe('store', () => {
   } = store
 
   describe('visitor', () => {
-    it('collects action definitions', () => {
+    it('should collect action definitions', () => {
       expect(actionDefinitions.size)
         .toBe(2)
 
@@ -29,7 +29,7 @@ describe('store', () => {
         .toBe(true)
     })
 
-    it('collects state definitions', () => {
+    it('should collect state definitions', () => {
       expect(stateDefinitions.size)
         .toBe(1)
 
@@ -37,7 +37,7 @@ describe('store', () => {
         .toBe(true)
     })
 
-    it('collects affected state definitions in action methods', () => {
+    it('should collect affected state definitions in action methods', () => {
       expect(actionDefinitions.get('addItem').affectedStateDefinitions)
         .toContain(stateDefinitions.get('items'))
 
@@ -45,7 +45,7 @@ describe('store', () => {
         .toContain(stateDefinitions.get('items'))
     })
 
-    it('collects called action definitions in action methods', () => {
+    it('should collect called action definitions in action methods', () => {
       expect(actionDefinitions.get('addItem').calledActionDefinitions.size)
         .toBe(0)
     })

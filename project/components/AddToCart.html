@@ -1,13 +1,13 @@
-<link rel="script" href="./AddToCart.ts" />
+<!-- <link rel="script" href="./AddToCart.ts" />
 
-<link rel="stylesheet" href="./AddToCart.css" />
+<link rel="stylesheet" href="./AddToCart.css" />-->
 
 <div
   class="add-to-cart"
-  on:click={onClick}
+  on:click={this.onClick}
 >
-  {#if hasCartItem}
-  Добавлено {cartItemCount} шт
+  {#if this.hasCartItem}
+  Добавлено {this.cartItemCount} шт
   {:else}
   Добавить в корзину
   {/if}

@@ -4,9 +4,15 @@ import * as tsMorph from 'ts-morph'
 import { Store } from '../store'
 import { PageContext } from '../page-context'
 
+import { Script } from './script'
+import { Template } from './template'
 import { PropertyDefinition } from './property-definition'
 
 export class Component {
+  script: Script
+
+  template: Template
+
   /**
    * Injected stores
    *
@@ -25,7 +31,6 @@ export class Component {
    */
   propertyDefinitions: Map<string, PropertyDefinition> = new Map()
 
-
   /**
    * Imported components
    *
@@ -36,49 +41,41 @@ export class Component {
   importedComponents: Map<string, Component> = new Map()
 
   constructor (
-    public scriptAst: tsMorph.SourceFile,
-    public templateAst: ReturnType<typeof svelte.parse>,
+    public scriptSourceFile: tsMorph.SourceFile,
+    public templateSourceFile: tsMorph.SourceFile,
     public pageContext: PageContext
-  ) {}
+  ) {
+    this.script = new Script(
+      this.scriptSourceFile,
+      this
+    )
+
+    this.template = new Template(
+      this.templateSourceFile,
+      this
+    )
+  }
 
   visit () {
     // TODO: Implement
+    this.script.visit()
+
+    this.template.visit()
   }
 
-  // get script () {
-  //   if (this._cachedScript) {
-  //     return this._cachedScript
-  //   }
+  addImportedComponent (componentPath: string) {
+    const { resolvedFileName } = this.pageContext.resolveModuleName(
+      componentPath,
+      this.templateSourceFile.getFilePath()
+    )
 
-  //   return this._cachedScript = this.template.html.children
-  //     .filter((node) => {
-  //       return (
-  //         node.name === 'link' &&
-  //         node.attributes.some(({ name, value }) => name === 'rel' && value[0].data === 'script')
-  //       )
-  //     })
-  //     .map((node) => {
-  //       const scriptHref = node.attributes.find(({ name }) => name === 'href').value[0].data
-  //       const scriptPath = path.join(path.dirname(this.templatePath), scriptHref)
+    this.importedComponents.set(
+      resolvedFileName,
+      this.pageContext.addComponentAtPath(resolvedFileName)
+    )
+  }
 
-  //       return this.pageContext.getSourceFile(scriptPath)
-  //     })
-  //     [0]
-  // }
+  addPropertyDefinition () {
 
-  // getImportedComponents () {
-  //   return this.template.html.children
-  //     .filter((node) => {
-  //       return (
-  //         node.name === 'link' &&
-  //         node.attributes.some(({ name, value }) => name === 'rel' && value[0].data === 'import')
-  //       )
-  //     })
-  //     .map((node) => {
-  //       const templateHref = node.attributes.find(({ name }) => name === 'href').value[0].data
-  //       const templatePath = path.join(path.dirname(this.templatePath), templateHref)
-
-  //       return new Component(templatePath, this.pageContext)
-  //     })
-  // }
+  }
 }

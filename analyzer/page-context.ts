@@ -9,6 +9,7 @@ export class PageContext {
   project: tsMorph.Project
 
   stores: Map<string, Store> = new Map()
+
   components: Map<string, Component> = new Map()
 
   constructor (_pagePath: string) {
@@ -16,6 +17,19 @@ export class PageContext {
       tsConfigFilePath: path.join(__dirname, '../tsconfig.json'),
       addFilesFromTsConfig: false
     })
+  }
+
+  resolveModuleName (moduleName: string, containingFile: string) {
+    const { resolvedModule } = tsMorph.ts.resolveModuleName(
+      moduleName.replace(/\.ts|\.html/, ''),
+      containingFile,
+      this.project.getCompilerOptions(),
+      this.project.getModuleResolutionHost()
+    )
+
+    // console.log(moduleName, containingFile)
+
+    return resolvedModule
   }
 
   addStoreAtPath (filePath: string) {
@@ -43,17 +57,13 @@ export class PageContext {
       return this.components.get(filePathWithoutExtension)
     }
 
-    const scriptAst = this.project.addSourceFileAtPath(`${filePathWithoutExtension}.ts`)
-
-    const templateAst = svelte.parse(
-      this.project.getFileSystem().readFileSync(`${filePathWithoutExtension}.html`)
-    )
-
     const component = new Component(
-      scriptAst,
-      templateAst,
+      this.project.addSourceFileAtPath(`${filePathWithoutExtension}.ts`),
+      this.project.addSourceFileAtPath(`${filePathWithoutExtension}.html`),
       this
     )
+
+    this.components.set(filePathWithoutExtension, component)
 
     component.visit()
 

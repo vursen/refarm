@@ -1,9 +1,15 @@
-<link rel="stylesheet" href="./ProductPage.css" />
-
+<link rel="import" href="../components/Photo.html" />
 <link rel="import" href="../components/AddToCart.html" />
 
 <div class="product-page">
   <h1>{productTitle}</h1>
+
+  {#each this.productPhotos as photo}
+    <Photo
+      src={photo.src}
+      alt={photo.alt}
+    />
+  {/each}
 
   <AddToCart
     productId={productId}
