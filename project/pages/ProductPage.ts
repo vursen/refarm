@@ -1,6 +1,6 @@
 import { Property, Inject } from '@retro/runtime/core'
 
-import { UserStore } from '@retro/project/stores/user'
+import { UserStore } from '../stores/UserStore'
 
 export class ProductPage {
   @Inject userStore: UserStore

@@ -1,6 +1,5 @@
 import * as path from 'path'
 
-import { Store } from '.'
 import { PageContext } from '../page-context'
 
 describe('store', () => {
@@ -9,24 +8,33 @@ describe('store', () => {
   )
 
   const store = pageContext.addStoreAtPath(
-    path.join(__dirname, '../../project/stores/cart.ts')
+    path.join(__dirname, '../../project/stores/CartStore.ts')
   )
 
   const {
+    injectedStores,
     stateDefinitions,
     actionDefinitions
   } = store
 
   describe('visitor', () => {
+    it('should collect injected stores', () => {
+      expect(injectedStores.size)
+        .toBe(1)
+
+      expect(injectedStores.has('userStore'))
+        .toBeTruthy()
+    })
+
     it('should collect action definitions', () => {
       expect(actionDefinitions.size)
         .toBe(2)
 
       expect(actionDefinitions.has('addItem'))
-        .toBe(true)
+        .toBeTruthy()
 
       expect(actionDefinitions.has('removeItem'))
-        .toBe(true)
+        .toBeTruthy()
     })
 
     it('should collect state definitions', () => {
@@ -34,7 +42,7 @@ describe('store', () => {
         .toBe(1)
 
       expect(stateDefinitions.has('items'))
-        .toBe(true)
+        .toBeTruthy()
     })
 
     it('should collect affected state definitions in action methods', () => {

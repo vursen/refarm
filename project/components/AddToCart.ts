@@ -1,6 +1,6 @@
 import { Property, Inject } from '@retro/runtime/core'
 
-import { CartStore } from '@retro/project/stores/cart'
+import { CartStore } from '../stores/CartStore'
 
 export class AddToCart {
   @Inject cartStore: CartStore

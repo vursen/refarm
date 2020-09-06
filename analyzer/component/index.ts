@@ -22,6 +22,15 @@ export class Component {
   injectedStores: Map<string, Store> = new Map()
 
   /**
+   * Imported components
+   *
+   * ```
+   * <link rel="import" href="../SomeComponent" />
+   * ```
+   */
+  importedComponents: Map<string, Component> = new Map()
+
+  /**
    * Property definitions
    *
    * ```
@@ -31,13 +40,15 @@ export class Component {
   propertyDefinitions: Map<string, PropertyDefinition> = new Map()
 
   /**
-   * Imported components
+   * Method definitions
    *
    * ```
-   * <link rel="import" href="../SomeComponent" />
+   * someMethod () {
+   *
+   * }
    * ```
    */
-  importedComponents: Map<string, Component> = new Map()
+  // methodDefinitions: Map<string, MethodDefinition> = new Map()
 
   constructor (
     public scriptSourceFile: tsMorph.SourceFile,
@@ -71,6 +82,15 @@ export class Component {
     this.importedComponents.set(
       component.name,
       component
+    )
+  }
+
+  addInjectedStore (path: string) {
+    const store = this.pageContext.addStoreAtPath(path)
+
+    this.injectedStores.set(
+      store.name,
+      store
     )
   }
 

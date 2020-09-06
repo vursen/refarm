@@ -2,46 +2,55 @@ import * as tsMorph from 'ts-morph'
 
 import { PageContext } from '../page-context'
 
+import {
+  isStoreClassDeclaration,
+  isStoreActionMethodDeclaration,
+  isStoreStatePropertyDeclaration,
+  isStoreInjectPropertyDeclaration
+} from './utils'
+
 import { StateDefinition } from './state-definition'
 import { ActionDefinition } from './action-definition'
 
 export class Store {
+  injectedStores: Map<string, Store> = new Map()
+
   stateDefinitions: Map<string, StateDefinition> = new Map()
+
   actionDefinitions: Map<string, ActionDefinition> = new Map()
 
   constructor (
-    public ast: tsMorph.SourceFile,
+    public sourceFile: tsMorph.SourceFile,
     public pageContext: PageContext
   ) {}
 
+  get name () {
+    return this.sourceFile.getBaseNameWithoutExtension()
+  }
+
   visit () {
-    this.ast.forEachChild((node) => {
-      // TODO: Check on it is a store class declaration
-      if (tsMorph.Node.isClassDeclaration(node)) {
-        this.visitClassDeclaration(node)
+    this.sourceFile.getClass(this.name).forEachChild((member) => {
+      if (isStoreActionMethodDeclaration(member)) {
+        this.visitActionMethodDeclaration(member)
+      }
+
+      if (isStoreStatePropertyDeclaration(member)) {
+        this.visitStatePropertyDeclaration(member)
+      }
+
+      if (isStoreInjectPropertyDeclaration(member)) {
+        this.visitInjectPropertyDeclaration(member)
       }
     })
 
     this.visitActionDefinitions()
   }
 
-  visitClassDeclaration (node: tsMorph.ClassDeclaration) {
-    node.forEachChild((member) => {
-      if (this.isActionMethodDeclaration(member)) {
-        this.visitActionMethodDeclaration(member)
-      }
-
-      if (this.isStatePropertyDeclaration(member)) {
-        this.visitStatePropertyDeclaration(member)
-      }
-    })
-  }
-
   /**
-   * Example:
+   * The visitor of state property declarations
    *
    * ```
-   * @Property productIds = []
+   * @State someProperty = []
    * ```
    */
   visitStatePropertyDeclaration (node: tsMorph.PropertyDeclaration) {
@@ -54,12 +63,10 @@ export class Store {
   }
 
   /**
-   * Example:
+   * The visitor of action method declarations
    *
    * ```
-   * @Action add (...) {
-   *  ...
-   * }
+   * @Action someAction (...) { ... }
    * ```
    */
   visitActionMethodDeclaration (node: tsMorph.MethodDeclaration) {
@@ -71,27 +78,30 @@ export class Store {
     )
   }
 
+  /**
+   * The visitor of inject property declarations
+   *
+   * ```
+   * @Inject someDependency: someType
+   * ```
+   */
+  visitInjectPropertyDeclaration (node: tsMorph.PropertyDeclaration) {
+    const name = node.getName()
+    const typeDeclaration = node.getType()?.getSymbol()?.getDeclarations()?.[0]
+
+    if (isStoreClassDeclaration(typeDeclaration)) {
+      const storePath = typeDeclaration.getSourceFile().getFilePath()
+
+      this.injectedStores.set(
+        name,
+        this.pageContext.addStoreAtPath(storePath)
+      )
+    }
+  }
+
   visitActionDefinitions () {
     for (const [_name, definition] of this.actionDefinitions) {
       definition.visit()
     }
-  }
-
-  /**
-   * Is the node a state property declaration?
-   */
-  private isStatePropertyDeclaration (node: tsMorph.Node): node is tsMorph.PropertyDeclaration {
-    return (
-      tsMorph.Node.isPropertyDeclaration(node) && node.getDecorator('State') !== undefined
-    )
-  }
-
-  /**
-   * Is the node an action method declaration?
-   */
-  private isActionMethodDeclaration (node: tsMorph.Node): node is tsMorph.MethodDeclaration {
-    return (
-      tsMorph.Node.isMethodDeclaration(node) && node.getDecorator('Action') !== undefined
-    )
   }
 }

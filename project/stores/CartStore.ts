@@ -1,6 +1,10 @@
-import { State, Action, Getter } from '@retro/runtime/core'
+import { State, Action, Getter, Inject } from '@retro/runtime/core'
+
+import { UserStore } from './UserStore'
 
 export class CartStore {
+  @Inject userStore: UserStore
+
   @State items = {}
 
   constructor ({ items }) {
