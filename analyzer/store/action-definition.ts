@@ -4,8 +4,6 @@ import { Store } from '.'
 import { StateDefinition } from './state-definition'
 
 export class ActionDefinition {
-  name: string
-
   /**
    * ```
    * @Action someAction () {
@@ -30,8 +28,10 @@ export class ActionDefinition {
   constructor (
     public node: tsMorph.MethodDeclaration,
     public store: Store
-  ) {
-    this.name = node.getName()
+  ) {}
+
+  get name () {
+    return this.node.getName()
   }
 
   visit () {

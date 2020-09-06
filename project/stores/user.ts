@@ -5,9 +5,9 @@ import { CartStore } from './cart'
 export class UserStore {
   @Inject cartStore: CartStore
 
-  @State email: string = null
-  @State lastName: string = null
-  @State firstName: string = null
+  @State email = null
+  @State lastName = null
+  @State firstName = null
 
   constructor ({ email, lastName, firstName }) {
     this.email = email

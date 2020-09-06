@@ -21,13 +21,11 @@ export class PageContext {
 
   resolveModuleName (moduleName: string, containingFile: string) {
     const { resolvedModule } = tsMorph.ts.resolveModuleName(
-      moduleName.replace(/\.ts|\.html/, ''),
+      moduleName,
       containingFile,
       this.project.getCompilerOptions(),
       this.project.getModuleResolutionHost()
     )
-
-    // console.log(moduleName, containingFile)
 
     return resolvedModule
   }

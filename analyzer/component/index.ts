@@ -1,17 +1,16 @@
-import * as svelte from 'svelte/compiler'
 import * as tsMorph from 'ts-morph'
+import * as svelte from 'svelte/compiler'
+import { TemplateNode } from 'svelte/types/compiler/interfaces'
 
 import { Store } from '../store'
 import { PageContext } from '../page-context'
 
-import { Script } from './script'
-import { Template } from './template'
+import { ScriptVisitor } from './script-visitor'
+import { TemplateVisitor } from './template-visitor'
 import { PropertyDefinition } from './property-definition'
 
 export class Component {
-  script: Script
-
-  template: Template
+  templateHtml: TemplateNode
 
   /**
    * Injected stores
@@ -35,7 +34,7 @@ export class Component {
    * Imported components
    *
    * ```
-   * <link rel="import" href="../SomeComponent.html" />
+   * <link rel="import" href="../SomeComponent" />
    * ```
    */
   importedComponents: Map<string, Component> = new Map()
@@ -45,37 +44,41 @@ export class Component {
     public templateSourceFile: tsMorph.SourceFile,
     public pageContext: PageContext
   ) {
-    this.script = new Script(
+    this.templateHtml = svelte.parse(this.templateSourceFile.getText()).html
+  }
+
+  visit () {
+    ScriptVisitor.visit(
       this.scriptSourceFile,
       this
     )
 
-    this.template = new Template(
+    TemplateVisitor.visit(
       this.templateSourceFile,
+      this.templateHtml,
       this
     )
   }
 
-  visit () {
-    // TODO: Implement
-    this.script.visit()
-
-    this.template.visit()
-  }
-
-  addImportedComponent (componentPath: string) {
+  addImportedComponent (path: string) {
     const { resolvedFileName } = this.pageContext.resolveModuleName(
-      componentPath,
+      path,
       this.templateSourceFile.getFilePath()
     )
 
+    const component = this.pageContext.addComponentAtPath(resolvedFileName)
+
     this.importedComponents.set(
-      resolvedFileName,
-      this.pageContext.addComponentAtPath(resolvedFileName)
+      component.name,
+      component
     )
   }
 
   addPropertyDefinition () {
 
+  }
+
+  get name () {
+    return this.scriptSourceFile.getBaseNameWithoutExtension()
   }
 }
