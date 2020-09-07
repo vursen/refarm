@@ -1,6 +1,6 @@
 import { State, Inject, Getter } from '@retro/runtime/core'
 
-import { CartStore } from './cart'
+import { CartStore } from './CartStore'
 
 export class UserStore {
   @Inject cartStore: CartStore
