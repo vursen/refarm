@@ -1,4 +1,4 @@
-import { State, Action, Getter, Inject } from '@retro/runtime/core'
+import { State, Action, Getter, Inject } from '@refarm/runtime/core'
 
 import { UserStore } from './UserStore'
 

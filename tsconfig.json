@@ -6,13 +6,13 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "paths": {
-      "@retro/project/*": [
+      "@refarm/project/*": [
         "project/*"
       ],
-      "@retro/runtime/*": [
+      "@refarm/runtime/*": [
         "runtime/*"
       ],
-      "@retro/analyzer/*": [
+      "@refarm/analyzer/*": [
         "analyzer/*"
       ]
     }

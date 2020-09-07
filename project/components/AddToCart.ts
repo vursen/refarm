@@ -1,4 +1,4 @@
-import { Property, Inject } from '@retro/runtime/core'
+import { Property, Inject } from '@refarm/runtime/core'
 
 import { CartStore } from '../stores/CartStore'
 
