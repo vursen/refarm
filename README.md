@@ -1,3 +1,3 @@
 # Refarm
 
-> SSR-oriented frontend technology for creating fastest websites
+> SSR-oriented frontend framework for building efficient websites
