@@ -1,4 +1,4 @@
-import { State, Action, Getter, Inject } from '@refarm/runtime/core'
+import { State, Inject } from '@refarm/runtime/core'
 
 import { UserStore } from './UserStore'
 
@@ -11,22 +11,18 @@ export class CartStore {
     this.items = items
   }
 
-  @Getter
   hasItem (productId: number) {
     return Boolean(this.items[productId])
   }
 
-  @Getter
   getItem (productId: number) {
     return this.items[productId]
   }
 
-  @Getter
   getItemCount (productId: number) {
     return this.getItem(productId)?.count
   }
 
-  @Action
   addItem (productId: number) {
     if (this.hasItem(productId)) {
       this.items[productId].count += 1
@@ -36,7 +32,6 @@ export class CartStore {
     this.items[productId] = { productId, count: 1 }
   }
 
-  @Action
   removeItem (productId: number) {
     if (this.getItemCount(productId) > 1) {
       this.items[productId].count -= 1

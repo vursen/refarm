@@ -4,20 +4,19 @@ import { PageContext } from '../page-context'
 
 import {
   isStoreClassDeclaration,
-  isStoreActionMethodDeclaration,
-  isStoreStatePropertyDeclaration,
-  isStoreInjectPropertyDeclaration
+  isStoreStateDeclaration,
+  isStoreInjectDeclaration
 } from './utils'
 
 import { StateDefinition } from './state-definition'
-import { ActionDefinition } from './action-definition'
+import { MethodDefinition } from './method-definition'
 
 export class Store {
   injectedStores: Map<string, Store> = new Map()
 
   stateDefinitions: Map<string, StateDefinition> = new Map()
 
-  actionDefinitions: Map<string, ActionDefinition> = new Map()
+  methodDefinitions: Map<string, MethodDefinition> = new Map()
 
   constructor (
     public sourceFile: tsMorph.SourceFile,
@@ -28,54 +27,35 @@ export class Store {
     return this.sourceFile.getBaseNameWithoutExtension()
   }
 
+  /**
+   * The visitor
+   */
   visit () {
-    this.sourceFile.getClass(this.name).forEachChild((member) => {
-      if (isStoreActionMethodDeclaration(member)) {
-        this.visitActionMethodDeclaration(member)
-      }
+    const classDeclaration = this.sourceFile.getClass(this.name)
 
-      if (isStoreStatePropertyDeclaration(member)) {
-        this.visitStatePropertyDeclaration(member)
-      }
-
-      if (isStoreInjectPropertyDeclaration(member)) {
-        this.visitInjectPropertyDeclaration(member)
+    // 1. Visit state property declarations
+    classDeclaration.getInstanceMembers().forEach((member) => {
+      if (isStoreStateDeclaration(member)) {
+        this.visitStateDeclaration(member)
       }
     })
 
-    this.visitActionDefinitions()
-  }
+    // 2. Visit method declarations
+    classDeclaration.getInstanceMethods().forEach((member) => {
+      this.visitMethodDeclaration(member)
+    })
 
-  /**
-   * The visitor of state property declarations
-   *
-   * ```
-   * @State someProperty = []
-   * ```
-   */
-  visitStatePropertyDeclaration (node: tsMorph.PropertyDeclaration) {
-    const name = node.getName()
+    // 3. Visit inject property declarations
+    classDeclaration.getInstanceMembers().forEach((member) => {
+      if (isStoreInjectDeclaration(member)) {
+        this.visitInjectDeclaration(member)
+      }
+    })
 
-    this.stateDefinitions.set(
-      name,
-      new StateDefinition(node, this)
-    )
-  }
-
-  /**
-   * The visitor of action method declarations
-   *
-   * ```
-   * @Action someAction (...) { ... }
-   * ```
-   */
-  visitActionMethodDeclaration (node: tsMorph.MethodDeclaration) {
-    const name = node.getName()
-
-    this.actionDefinitions.set(
-      name,
-      new ActionDefinition(node, this)
-    )
+    // 4. Visit method definitions deeply
+    ;[...this.methodDefinitions.values()].forEach((definition) => {
+      definition.visit()
+    })
   }
 
   /**
@@ -85,23 +65,49 @@ export class Store {
    * @Inject someDependency: someType
    * ```
    */
-  visitInjectPropertyDeclaration (node: tsMorph.PropertyDeclaration) {
-    const name = node.getName()
+  visitInjectDeclaration (node: tsMorph.PropertyDeclaration) {
     const typeDeclaration = node.getType()?.getSymbol()?.getDeclarations()?.[0]
 
     if (isStoreClassDeclaration(typeDeclaration)) {
-      const storePath = typeDeclaration.getSourceFile().getFilePath()
+      const name = node.getName()
+      const path = typeDeclaration.getSourceFile().getFilePath()
 
       this.injectedStores.set(
         name,
-        this.pageContext.addStoreAtPath(storePath)
+        this.pageContext.addStoreAtPath(path)
       )
     }
   }
 
-  visitActionDefinitions () {
-    for (const [_name, definition] of this.actionDefinitions) {
-      definition.visit()
-    }
+  /**
+   * The visitor of state property declarations
+   *
+   * ```
+   * @State someProperty = []
+   * ```
+   */
+  visitStateDeclaration (node: tsMorph.PropertyDeclaration) {
+    const name = node.getName()
+
+    this.stateDefinitions.set(
+      name,
+      new StateDefinition(node, this)
+    )
+  }
+
+  /**
+   * The visitor of method declarations
+   *
+   * ```
+   * someMethod (...) { ... }
+   * ```
+   */
+  visitMethodDeclaration (node: tsMorph.MethodDeclaration) {
+    const name = node.getName()
+
+    this.methodDefinitions.set(
+      name,
+      new MethodDefinition(node, this)
+    )
   }
 }

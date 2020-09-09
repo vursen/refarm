@@ -2,7 +2,7 @@
 <link rel="import" href="../components/AddToCart" />
 
 <div class="product-page">
-  <h1>{productTitle}</h1>
+  <h1>{this.productTitle}</h1>
 
   {#each this.productPhotos as photo}
     <Photo
@@ -12,7 +12,7 @@
   {/each}
 
   <AddToCart
-    productId={productId}
-    productTitle={productTitle}
+    productId={this.productId}
+    productTitle={this.productTitle}
   />
 </div>

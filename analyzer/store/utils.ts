@@ -13,7 +13,7 @@ export function isStoreClassDeclaration (node: tsMorph.Node): node is tsMorph.Cl
 /**
  * Is the node a store state property declaration?
  */
-export function isStoreStatePropertyDeclaration (node: tsMorph.Node): node is tsMorph.PropertyDeclaration {
+export function isStoreStateDeclaration (node: tsMorph.Node): node is tsMorph.PropertyDeclaration {
   return Boolean(
     tsMorph.Node.isPropertyDeclaration(node) &&
     node.getDecorator('State')
@@ -23,17 +23,17 @@ export function isStoreStatePropertyDeclaration (node: tsMorph.Node): node is ts
 /**
  * Is the node a store action method declaration?
  */
-export function isStoreActionMethodDeclaration (node: tsMorph.Node): node is tsMorph.MethodDeclaration {
-  return Boolean(
-    tsMorph.Node.isMethodDeclaration(node) &&
-    node.getDecorator('Action')
-  )
-}
+// export function isStoreMethodDeclaration (node: tsMorph.Node): node is tsMorph.MethodDeclaration {
+//   return Boolean(
+//     tsMorph.Node.isMethodDeclaration(node) &&
+//     node.getDecorator('Action')
+//   )
+// }
 
 /**
  * Is the node a store inject property declaration?
  */
-export function isStoreInjectPropertyDeclaration (node: tsMorph.Node): node is tsMorph.PropertyDeclaration {
+export function isStoreInjectDeclaration (node: tsMorph.Node): node is tsMorph.PropertyDeclaration {
   return Boolean(
     tsMorph.Node.isPropertyDeclaration(node) &&
     node.getDecorator('Inject')

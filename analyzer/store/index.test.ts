@@ -7,17 +7,17 @@ describe('store', () => {
     path.join(__dirname, '../../project/pages/ProductPage.ts')
   )
 
-  const store = pageContext.addStoreAtPath(
+  const cartStore = pageContext.addStoreAtPath(
     path.join(__dirname, '../../project/stores/CartStore.ts')
   )
 
   const {
     injectedStores,
     stateDefinitions,
-    actionDefinitions
-  } = store
+    methodDefinitions
+  } = cartStore
 
-  describe('visitor', () => {
+  describe('store visitor', () => {
     it('should collect injected stores', () => {
       expect(injectedStores.size)
         .toBe(1)
@@ -26,14 +26,14 @@ describe('store', () => {
         .toBeTruthy()
     })
 
-    it('should collect action definitions', () => {
-      expect(actionDefinitions.size)
-        .toBe(2)
+    it('should collect method definitions', () => {
+      expect(methodDefinitions.size)
+        .toBe(5)
 
-      expect(actionDefinitions.has('addItem'))
+      expect(methodDefinitions.has('addItem'))
         .toBeTruthy()
 
-      expect(actionDefinitions.has('removeItem'))
+      expect(methodDefinitions.has('removeItem'))
         .toBeTruthy()
     })
 
@@ -44,18 +44,28 @@ describe('store', () => {
       expect(stateDefinitions.has('items'))
         .toBeTruthy()
     })
+  })
 
-    it('should collect affected state definitions in action methods', () => {
-      expect(actionDefinitions.get('addItem').affectedStateDefinitions)
-        .toContain(stateDefinitions.get('items'))
+  describe('method definition visitor', () => {
+    const {
+      writedStateDefinitions,
+      calledMethodDefinitions
+    } = methodDefinitions.get('addItem')
 
-      expect(actionDefinitions.get('removeItem').affectedStateDefinitions)
+    it('should collect writed state definitions', () => {
+      expect(writedStateDefinitions.size)
+        .toBe(1)
+
+      expect(writedStateDefinitions)
         .toContain(stateDefinitions.get('items'))
     })
 
-    it('should collect called action definitions in action methods', () => {
-      expect(actionDefinitions.get('addItem').calledActionDefinitions.size)
-        .toBe(0)
+    it('should collect called method definitions', () => {
+      expect(calledMethodDefinitions.size)
+        .toBe(1)
+
+      expect(calledMethodDefinitions)
+        .toContain(methodDefinitions.get('hasItem'))
     })
   })
 })
