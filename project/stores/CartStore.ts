@@ -2,10 +2,15 @@ import { State, Inject } from '@refarm/runtime/core'
 
 import { UserStore } from './UserStore'
 
+interface IItem {
+  count: number
+  productId: number
+}
+
 export class CartStore {
   @Inject userStore: UserStore
 
-  @State items = {}
+  @State items: Record<number, IItem> = {}
 
   constructor ({ items }) {
     this.items = items

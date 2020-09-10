@@ -3,12 +3,12 @@ import * as path from 'path'
 import { PageContext } from '../page-context'
 
 describe('store', () => {
-  const pageContext = new PageContext(
-    path.join(__dirname, '../../project/pages/ProductPage.ts')
-  )
+  const pageContext = new PageContext({
+    tsConfigFilePath: path.join(__dirname, '../../../project/tsconfig.json')
+  })
 
   const cartStore = pageContext.addStoreAtPath(
-    path.join(__dirname, '../../project/stores/CartStore.ts')
+    path.join(__dirname, '../../../project/stores/CartStore.ts')
   )
 
   const {
@@ -50,7 +50,7 @@ describe('store', () => {
     const {
       writedStateDefinitions,
       calledMethodDefinitions
-    } = methodDefinitions.get('addItem')
+    } = methodDefinitions.get('addItem')!
 
     it('should collect writed state definitions', () => {
       expect(writedStateDefinitions.size)

@@ -4,11 +4,11 @@
     "target": "es2015",
     "module": "commonjs",
     "moduleResolution": "node",
+    "alwaysStrict": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
     "experimentalDecorators": true,
     "paths": {
-      "@refarm/project/*": [
-        "project/*"
-      ],
       "@refarm/runtime/*": [
         "runtime/*"
       ],
@@ -18,7 +18,6 @@
     }
   },
   "include": [
-    "**/*.ts",
-    "**/*.html"
+    "**/*.ts"
   ]
 }

@@ -34,19 +34,19 @@ export class Store {
     const classDeclaration = this.sourceFile.getClass(this.name)
 
     // 1. Visit state property declarations
-    classDeclaration.getInstanceMembers().forEach((member) => {
+    classDeclaration!.getInstanceMembers().forEach((member) => {
       if (isStoreStateDeclaration(member)) {
         this.visitStateDeclaration(member)
       }
     })
 
     // 2. Visit method declarations
-    classDeclaration.getInstanceMethods().forEach((member) => {
+    classDeclaration!.getInstanceMethods().forEach((member) => {
       this.visitMethodDeclaration(member)
     })
 
     // 3. Visit inject property declarations
-    classDeclaration.getInstanceMembers().forEach((member) => {
+    classDeclaration!.getInstanceMembers().forEach((member) => {
       if (isStoreInjectDeclaration(member)) {
         this.visitInjectDeclaration(member)
       }
@@ -68,7 +68,7 @@ export class Store {
   visitInjectDeclaration (node: tsMorph.PropertyDeclaration) {
     const typeDeclaration = node.getType()?.getSymbol()?.getDeclarations()?.[0]
 
-    if (isStoreClassDeclaration(typeDeclaration)) {
+    if (typeDeclaration && isStoreClassDeclaration(typeDeclaration)) {
       const name = node.getName()
       const path = typeDeclaration.getSourceFile().getFilePath()
 

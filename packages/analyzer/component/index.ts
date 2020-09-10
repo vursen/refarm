@@ -72,12 +72,16 @@ export class Component {
   }
 
   addImportedComponent (path: string) {
-    const { resolvedFileName } = this.pageContext.resolveModuleName(
+    const resolvedFilePath = this.pageContext.resolveModuleName(
       path,
       this.templateSourceFile.getFilePath()
     )
 
-    const component = this.pageContext.addComponentAtPath(resolvedFileName)
+    if (!resolvedFilePath) {
+      return
+    }
+
+    const component = this.pageContext.addComponentAtPath(resolvedFilePath)
 
     this.importedComponents.set(
       component.name,

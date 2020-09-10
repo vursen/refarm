@@ -3,12 +3,12 @@ import * as path from 'path'
 import { PageContext } from '../page-context'
 
 describe('store', () => {
-  const pageContext = new PageContext(
-    path.join(__dirname, '../../project/pages/ProductPage.ts')
-  )
+  const pageContext = new PageContext({
+    tsConfigFilePath: path.join(__dirname, '../../../project/tsconfig.json')
+  })
 
   const component = pageContext.addComponentAtPath(
-    path.join(__dirname, '../../project/pages/ProductPage.ts')
+    path.join(__dirname, '../../../project/pages/ProductPage.ts')
   )
 
   const {

@@ -2,12 +2,8 @@
   "name": "refarm",
   "description": "SSR-oriented frontend technology for creating fastest websites",
   "version": "1.0.0",
-  "main": "./index.ts",
+  "main": "./analyzer/index.ts",
   "license": "MIT",
-  "scripts": {
-    "analyze": "ts-node ./index.ts",
-    "debug": "node --inspect ./node_modules/.bin/jest"
-  },
   "dependencies": {
     "svelte": "3.24.1",
     "ts-morph": "^8.1.0",

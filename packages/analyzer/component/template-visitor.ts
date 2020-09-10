@@ -16,7 +16,7 @@ export class TemplateVisitor {
   ) {}
 
   private visit () {
-    this.html.children.forEach((node) => {
+    this.html.children!.forEach((node) => {
       if (this.isImportLinkTag(node)) {
         this.visitImportLinkTag(node)
       }

@@ -1,6 +1,4 @@
-import * as path from 'path'
 import * as tsMorph from 'ts-morph'
-import * as svelte from 'svelte/compiler'
 
 import { Store } from './store'
 import { Component } from './component'
@@ -12,9 +10,11 @@ export class PageContext {
 
   components: Map<string, Component> = new Map()
 
-  constructor (_pagePath: string) {
+  constructor (options: { tsConfigFilePath: string }) {
+    const { tsConfigFilePath } = options
+
     this.project = new tsMorph.Project({
-      tsConfigFilePath: path.join(__dirname, '../tsconfig.json'),
+      tsConfigFilePath,
       addFilesFromTsConfig: false
     })
   }
@@ -27,12 +27,12 @@ export class PageContext {
       this.project.getModuleResolutionHost()
     )
 
-    return resolvedModule
+    return resolvedModule?.resolvedFileName
   }
 
   addStoreAtPath (filePath: string) {
     if (this.stores.has(filePath)) {
-      return this.stores.get(filePath)
+      return this.stores.get(filePath)!
     }
 
     const store = new Store(
@@ -52,7 +52,7 @@ export class PageContext {
     const filePathWithoutExtension = filePath.replace(/(\.html|\.ts)$/, '')
 
     if (this.components.has(filePathWithoutExtension)) {
-      return this.components.get(filePathWithoutExtension)
+      return this.components.get(filePathWithoutExtension)!
     }
 
     const component = new Component(
