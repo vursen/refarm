@@ -9,7 +9,7 @@
         "./*"
       ],
       "@refarm/runtime/*": [
-        "../packages/runtime/*"
+        "../src/runtime/*"
       ]
     }
   },
