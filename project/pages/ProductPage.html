@@ -1,8 +1,10 @@
-<link rel="import" href="../components/Photo" />
-<link rel="import" href="../components/AddToCart" />
+<import href="../components/Photo" />
+<import href="../components/AddToCart" />
 
 <div class="product-page">
-  <h1>{this.productTitle}</h1>
+  <h1>
+    {this.productTitle}
+  </h1>
 
   {#each this.productPhotos as photo}
     <Photo

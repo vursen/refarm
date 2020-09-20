@@ -1,16 +1,15 @@
 import * as tsMorph from 'ts-morph'
-import * as svelte from 'svelte/compiler'
-import { TemplateNode } from 'svelte/types/compiler/interfaces'
 
 import { Store } from '../store'
 import { PageContext } from '../page-context'
 
+import { Template } from './template'
 import { ScriptVisitor } from './script-visitor'
 import { TemplateVisitor } from './template-visitor'
 import { PropertyDefinition } from './property-definition'
 
 export class Component {
-  templateHtml: TemplateNode
+  template: Template
 
   /**
    * Injected stores
@@ -55,20 +54,23 @@ export class Component {
     public templateSourceFile: tsMorph.SourceFile,
     public pageContext: PageContext
   ) {
-    this.templateHtml = svelte.parse(this.templateSourceFile.getText()).html
+    this.template = new Template(
+      this.templateSourceFile,
+      this
+    )
   }
 
   visit () {
-    ScriptVisitor.visit(
-      this.scriptSourceFile,
-      this
-    )
+    // ScriptVisitor.visit(
+    //   this.scriptSourceFile,
+    //   this
+    // )
 
-    TemplateVisitor.visit(
-      this.templateSourceFile,
-      this.templateHtml,
-      this
-    )
+    // TemplateVisitor.visit(
+    //   this.templateSourceFile,
+    //   this.templateHtml,
+    //   this
+    // )
   }
 
   addImportedComponent (path: string) {

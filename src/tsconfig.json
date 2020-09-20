@@ -10,10 +10,13 @@
     "experimentalDecorators": true,
     "paths": {
       "@refarm/runtime/*": [
-        "runtime/*"
+        "./runtime/*"
       ],
-      "@refarm/analyzer/*": [
-        "analyzer/*"
+      "@refarm/compiler/*": [
+        "compiler/*"
+      ],
+      "@refarm/template-parser/*": [
+        "./template-parser/*"
       ]
     }
   },

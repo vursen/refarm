@@ -6,10 +6,21 @@
 
 ## Roadmap
 
-- Build the analyzer that will detect changes on client side
-- Build the code generator that will produce server side and client side code using analyzer's knowledges
-- Write documentation, examples
-- Integrate with rollup
-- Integrate with webpack
-- Build instruments for developing static sites
-- Build instruments for developing dynamic sites
+### Analyzer
+
+- Build transfomer of HTML template to TSX
+- Build data flow graph of components and templates
+- Analyze data flow graph for detecting mutable parts
+
+### Code generator
+
+- Build final code generator
+
+### HMR
+
+TODO: Write
+
+### Documentation
+
+TODO: Write
+

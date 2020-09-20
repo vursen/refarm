@@ -1,6 +1,4 @@
-import { State, Inject } from '@refarm/runtime/core'
-
-import { UserStore } from './UserStore'
+import { State } from '@refarm/runtime/core'
 
 interface IItem {
   count: number
@@ -8,8 +6,6 @@ interface IItem {
 }
 
 export class CartStore {
-  @Inject userStore: UserStore
-
   @State items: Record<number, IItem> = {}
 
   constructor ({ items }) {

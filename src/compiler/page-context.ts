@@ -47,6 +47,10 @@ export class PageContext {
     return store
   }
 
+  // addTemplateAtPath (filePath: string) {
+
+  // }
+
   addComponentAtPath (filePath: string) {
     // TODO: Refactor
     const filePathWithoutExtension = filePath.replace(/(\.html|\.ts)$/, '')

@@ -11,8 +11,4 @@ export class PropertyDefinition {
   get name () {
     return this.node.getName()
   }
-
-  visit () {
-    // @TODO: Implement
-  }
 }
