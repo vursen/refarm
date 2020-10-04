@@ -6,9 +6,12 @@ import { Component } from '..'
 
 import { Node } from './node'
 // import { Text } from './text'
+import { Text } from './text'
 import { Element } from './element'
 import { IfBlock } from './if-block'
 import { EachBlock } from './each-block'
+import { MustacheTag } from './mustache-tag'
+import { InlineComponent } from './inline-component'
 
 export class Template {
   ast: Array<Node | undefined>
@@ -21,6 +24,10 @@ export class Template {
 
     this.ast = mapChildren(this.component, null, html.children ?? [])
   }
+
+  dump () {
+    return this.ast.map((node) => node?.dump())
+  }
 }
 
 export function getNodeClass (rawNode: TemplateNode): typeof Node | null {
@@ -31,8 +38,12 @@ export function getNodeClass (rawNode: TemplateNode): typeof Node | null {
       return Element
     case 'IfBlock':
       return IfBlock
-    // case 'Text':
-    //   return Text
+    case 'InlineComponent':
+      return InlineComponent
+    case 'MustacheTag':
+      return MustacheTag
+    case 'Text':
+      return Text
     default:
       return null
   }

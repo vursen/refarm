@@ -5,6 +5,7 @@
   "main": "./analyzer/index.ts",
   "license": "MIT",
   "dependencies": {
+    "@types/estree": "^0.0.45",
     "svelte": "3.24.1",
     "ts-morph": "^8.1.0",
     "ts-node": "8.10.2"

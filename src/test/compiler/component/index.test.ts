@@ -19,28 +19,7 @@ describe('store', () => {
 
   describe('template', () => {
     it('should parse ast', () => {
-      expect(component.template.ast).toMatchObject([
-        { type: 'Element' },
-        undefined,
-        { type: 'Element' },
-        undefined,
-        {
-          type: 'Element',
-          children: [
-            undefined,
-            {
-              type: 'Element'
-            },
-            undefined,
-            {
-              type: 'EachBlock'
-            },
-            undefined,
-            undefined,
-            undefined
-          ]
-        }
-      ])
+      expect(component.template.dump()).toMatchSnapshot()
     })
   })
 

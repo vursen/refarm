@@ -1,0 +1,431 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`store template should parse ast 1`] = `
+Array [
+  Object {
+    "attributes": Array [
+      Object {
+        "children": Array [],
+        "name": undefined,
+        "type": "Attribute",
+        "value": Object {
+          "children": Array [],
+          "type": "Text",
+          "value": "../components/Photo",
+        },
+      },
+    ],
+    "children": Array [],
+    "type": "Element",
+  },
+  Object {
+    "children": Array [],
+    "type": "Text",
+    "value": "
+",
+  },
+  Object {
+    "attributes": Array [
+      Object {
+        "children": Array [],
+        "name": undefined,
+        "type": "Attribute",
+        "value": Object {
+          "children": Array [],
+          "type": "Text",
+          "value": "../components/AddToCart",
+        },
+      },
+    ],
+    "children": Array [],
+    "type": "Element",
+  },
+  Object {
+    "children": Array [],
+    "type": "Text",
+    "value": "
+
+",
+  },
+  Object {
+    "attributes": Array [
+      Object {
+        "children": Array [],
+        "name": undefined,
+        "type": "Attribute",
+        "value": Object {
+          "children": Array [],
+          "type": "Text",
+          "value": "product-page",
+        },
+      },
+    ],
+    "children": Array [
+      Object {
+        "children": Array [],
+        "type": "Text",
+        "value": "
+  ",
+      },
+      Object {
+        "attributes": Array [],
+        "children": Array [
+          Object {
+            "children": Array [],
+            "type": "Text",
+            "value": "
+    ",
+          },
+          Object {
+            "children": Array [],
+            "expression": Object {
+              "ast": Node {
+                "computed": false,
+                "end": 137,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 22,
+                    "line": 6,
+                  },
+                  "start": Position {
+                    "column": 5,
+                    "line": 6,
+                  },
+                },
+                "object": Node {
+                  "end": 124,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 9,
+                      "line": 6,
+                    },
+                    "start": Position {
+                      "column": 5,
+                      "line": 6,
+                    },
+                  },
+                  "start": 120,
+                  "type": "ThisExpression",
+                },
+                "optional": false,
+                "property": Node {
+                  "end": 137,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 22,
+                      "line": 6,
+                    },
+                    "start": Position {
+                      "column": 10,
+                      "line": 6,
+                    },
+                  },
+                  "name": "productTitle",
+                  "start": 125,
+                  "type": "Identifier",
+                },
+                "start": 120,
+                "type": "MemberExpression",
+              },
+              "children": Array [],
+              "type": "Expression",
+            },
+            "type": "MustacheTag",
+          },
+          Object {
+            "children": Array [],
+            "type": "Text",
+            "value": "
+  ",
+          },
+        ],
+        "type": "Element",
+      },
+      Object {
+        "children": Array [],
+        "type": "Text",
+        "value": "
+
+  ",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "attributes": Array [
+              Object {
+                "children": Array [],
+                "name": undefined,
+                "type": "Attribute",
+                "value": Object {
+                  "children": Array [],
+                  "expression": Object {
+                    "ast": Node {
+                      "computed": false,
+                      "end": 217,
+                      "loc": SourceLocation {
+                        "end": Position {
+                          "column": 20,
+                          "line": 11,
+                        },
+                        "start": Position {
+                          "column": 11,
+                          "line": 11,
+                        },
+                      },
+                      "object": Node {
+                        "end": 213,
+                        "loc": SourceLocation {
+                          "end": Position {
+                            "column": 16,
+                            "line": 11,
+                          },
+                          "start": Position {
+                            "column": 11,
+                            "line": 11,
+                          },
+                        },
+                        "name": "photo",
+                        "start": 208,
+                        "type": "Identifier",
+                      },
+                      "optional": false,
+                      "property": Node {
+                        "end": 217,
+                        "loc": SourceLocation {
+                          "end": Position {
+                            "column": 20,
+                            "line": 11,
+                          },
+                          "start": Position {
+                            "column": 17,
+                            "line": 11,
+                          },
+                        },
+                        "name": "src",
+                        "start": 214,
+                        "type": "Identifier",
+                      },
+                      "start": 208,
+                      "type": "MemberExpression",
+                    },
+                    "children": Array [],
+                    "type": "Expression",
+                  },
+                  "type": "MustacheTag",
+                },
+              },
+              Object {
+                "children": Array [],
+                "name": undefined,
+                "type": "Attribute",
+                "value": Object {
+                  "children": Array [],
+                  "expression": Object {
+                    "ast": Node {
+                      "computed": false,
+                      "end": 239,
+                      "loc": SourceLocation {
+                        "end": Position {
+                          "column": 20,
+                          "line": 12,
+                        },
+                        "start": Position {
+                          "column": 11,
+                          "line": 12,
+                        },
+                      },
+                      "object": Node {
+                        "end": 235,
+                        "loc": SourceLocation {
+                          "end": Position {
+                            "column": 16,
+                            "line": 12,
+                          },
+                          "start": Position {
+                            "column": 11,
+                            "line": 12,
+                          },
+                        },
+                        "name": "photo",
+                        "start": 230,
+                        "type": "Identifier",
+                      },
+                      "optional": false,
+                      "property": Node {
+                        "end": 239,
+                        "loc": SourceLocation {
+                          "end": Position {
+                            "column": 20,
+                            "line": 12,
+                          },
+                          "start": Position {
+                            "column": 17,
+                            "line": 12,
+                          },
+                        },
+                        "name": "alt",
+                        "start": 236,
+                        "type": "Identifier",
+                      },
+                      "start": 230,
+                      "type": "MemberExpression",
+                    },
+                    "children": Array [],
+                    "type": "Expression",
+                  },
+                  "type": "MustacheTag",
+                },
+              },
+            ],
+            "children": Array [],
+            "type": "InlineComponent",
+          },
+        ],
+        "type": "EachBlock",
+      },
+      Object {
+        "children": Array [],
+        "type": "Text",
+        "value": "
+
+  ",
+      },
+      Object {
+        "attributes": Array [
+          Object {
+            "children": Array [],
+            "name": undefined,
+            "type": "Attribute",
+            "value": Object {
+              "children": Array [],
+              "expression": Object {
+                "ast": Node {
+                  "computed": false,
+                  "end": 301,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 29,
+                      "line": 17,
+                    },
+                    "start": Position {
+                      "column": 15,
+                      "line": 17,
+                    },
+                  },
+                  "object": Node {
+                    "end": 291,
+                    "loc": SourceLocation {
+                      "end": Position {
+                        "column": 19,
+                        "line": 17,
+                      },
+                      "start": Position {
+                        "column": 15,
+                        "line": 17,
+                      },
+                    },
+                    "start": 287,
+                    "type": "ThisExpression",
+                  },
+                  "optional": false,
+                  "property": Node {
+                    "end": 301,
+                    "loc": SourceLocation {
+                      "end": Position {
+                        "column": 29,
+                        "line": 17,
+                      },
+                      "start": Position {
+                        "column": 20,
+                        "line": 17,
+                      },
+                    },
+                    "name": "productId",
+                    "start": 292,
+                    "type": "Identifier",
+                  },
+                  "start": 287,
+                  "type": "MemberExpression",
+                },
+                "children": Array [],
+                "type": "Expression",
+              },
+              "type": "MustacheTag",
+            },
+          },
+          Object {
+            "children": Array [],
+            "name": undefined,
+            "type": "Attribute",
+            "value": Object {
+              "children": Array [],
+              "expression": Object {
+                "ast": Node {
+                  "computed": false,
+                  "end": 338,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 35,
+                      "line": 18,
+                    },
+                    "start": Position {
+                      "column": 18,
+                      "line": 18,
+                    },
+                  },
+                  "object": Node {
+                    "end": 325,
+                    "loc": SourceLocation {
+                      "end": Position {
+                        "column": 22,
+                        "line": 18,
+                      },
+                      "start": Position {
+                        "column": 18,
+                        "line": 18,
+                      },
+                    },
+                    "start": 321,
+                    "type": "ThisExpression",
+                  },
+                  "optional": false,
+                  "property": Node {
+                    "end": 338,
+                    "loc": SourceLocation {
+                      "end": Position {
+                        "column": 35,
+                        "line": 18,
+                      },
+                      "start": Position {
+                        "column": 23,
+                        "line": 18,
+                      },
+                    },
+                    "name": "productTitle",
+                    "start": 326,
+                    "type": "Identifier",
+                  },
+                  "start": 321,
+                  "type": "MemberExpression",
+                },
+                "children": Array [],
+                "type": "Expression",
+              },
+              "type": "MustacheTag",
+            },
+          },
+        ],
+        "children": Array [],
+        "type": "InlineComponent",
+      },
+      Object {
+        "children": Array [],
+        "type": "Text",
+        "value": "
+",
+      },
+    ],
+    "type": "Element",
+  },
+]
+`;
