@@ -1,12 +1,44 @@
-import { Property, Inject } from '/../src/runtime/core'
+import { Attribute, Tracked, onMount, onDestroy } from '@refarm/runtime/core'
 
 import { CartStore } from '../stores/CartStore'
 
-export class AddToCart {
-  @Inject cartStore: CartStore
+class VisibilityObserver {
+  constructor () {
+    onMount(() => {
 
-  @Property productId: number
-  @Property productTitle: string
+    })
+
+    onDestroy(() => {
+
+    })
+  }
+}
+
+export class AddToCart {
+  @Attribute productId: number
+  @Attribute productTitle: string
+
+  @Tracked cartStore: CartStore
+  @Tracked visibilityObserver: VisibilityObserver
+
+  constructor () {
+    this.visibilityObserver = new VisibilityObserver()
+
+    onMount(() => {
+
+    })
+
+    onDestroy(() => {
+
+    })
+    // watch(this, 'productId', () => {
+    //   this.items.setProductId(this.productId)
+    // })
+
+    // watch(this, 'productTitle', () => {
+    //   this.state.setProductTitle(this.productTitle)
+    // })
+  }
 
   get hasCartItem () {
     return this.cartStore.hasItem(this.productId)

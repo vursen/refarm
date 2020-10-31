@@ -1,14 +1,14 @@
 import * as tsMorph from 'ts-morph'
 
-import { Store } from './store'
+import { Klass } from './klass'
 import { Component } from './component'
 
-export class PageContext {
+export class Context {
   project: tsMorph.Project
 
-  stores: Map<string, Store> = new Map()
+  klasses: Map<Klass['node'], Klass> = new Map()
 
-  components: Map<string, Component> = new Map()
+  components: Map<string/* path */, Component> = new Map()
 
   constructor (options: { tsConfigFilePath: string }) {
     const { tsConfigFilePath } = options
@@ -30,28 +30,25 @@ export class PageContext {
     return resolvedModule?.resolvedFileName
   }
 
-  addStoreAtPath (filePath: string) {
-    if (this.stores.has(filePath)) {
-      return this.stores.get(filePath)!
+  addKlass (node: Klass['node']) {
+    if (this.klasses.has(node)) {
+      return this.klasses.get(node)!
     }
 
-    const store = new Store(
-      this.project.addSourceFileAtPath(filePath),
+    const klass = new Klass(
+      node,
       this
     )
 
-    this.stores.set(filePath, store)
+    this.klasses.set(node, klass)
 
-    store.visit()
+    klass.visit()
+    klass.visitDeeply()
 
-    return store
+    return klass
   }
 
-  // addTemplateAtPath (filePath: string) {
-
-  // }
-
-  addComponentAtPath (filePath: string) {
+  addComponent (filePath: string) {
     // TODO: Refactor
     const filePathWithoutExtension = filePath.replace(/(\.html|\.ts)$/, '')
 

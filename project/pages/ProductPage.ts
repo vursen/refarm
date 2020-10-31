@@ -1,7 +1,7 @@
-import { Property } from '/../src/runtime/core'
+import { Attribute } from '/../src/runtime/core'
 
 export class ProductPage {
-  @Property productId
-  @Property productTitle
-  @Property productPhotos
+  @Attribute productId: number
+  @Attribute productTitle: string
+  @Attribute productPhotos: string[]
 }

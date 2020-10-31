@@ -2,6 +2,8 @@ import * as tsMorph from 'ts-morph'
 import * as svelte from 'svelte/compiler'
 import { TemplateNode } from 'svelte/types/compiler/interfaces'
 
+import { Context } from '../../context'
+
 import { Component } from '..'
 
 import { Node } from './node'
@@ -18,6 +20,7 @@ export class Template {
 
   constructor (
     public sourceFile: tsMorph.SourceFile,
+    public context: Context,
     public component: Component
   ) {
     const { html } = svelte.parse(this.sourceFile.getText())

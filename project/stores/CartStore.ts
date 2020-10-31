@@ -1,4 +1,4 @@
-import { State } from '@refarm/runtime/core'
+import { Tracked } from '@refarm/runtime/core'
 
 interface IItem {
   count: number
@@ -6,11 +6,9 @@ interface IItem {
 }
 
 export class CartStore {
-  @State items: Record<number, IItem> = {}
+  @Tracked items: Record<number, IItem> = {}
 
-  constructor ({ items }) {
-    this.items = items
-  }
+  // @Tracked items: Record<number, IItem> = {}
 
   hasItem (productId: number) {
     return Boolean(this.items[productId])

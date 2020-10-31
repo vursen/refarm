@@ -1,6 +1,6 @@
 import * as path from 'path'
 
-import { PageContext } from '../../../compiler/page-context'
+import { PageContext } from '../../../compiler/context'
 
 describe('store', () => {
   const pageContext = new PageContext({

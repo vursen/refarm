@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "target": "es2015",
     "module": "esnext",
+    "noImplicitAny": true,
     "experimentalDecorators": true,
     "paths": {
       "/*": [

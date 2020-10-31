@@ -1,19 +1,16 @@
-export function Property (target, propertyKey) {
+export function Tracked (target, propertyKey) {
   return target[propertyKey]
 }
 
-export function Inject (target, propertyKey) {
+export function Attribute (target, propertyKey) {
   return target[propertyKey]
 }
 
-export function State (target, propertyKey) {
-  return target[propertyKey]
+export function onMount (_callback: () => void) {
+
 }
 
-export function Getter (target, propertyKey) {
-  return target[propertyKey]
+export function onDestroy (_callback: () => void) {
+
 }
 
-export function Action (target, propertyKey) {
-  return target[propertyKey]
-}

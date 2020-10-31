@@ -1,6 +1,12 @@
-import { Property } from '@refarm/runtime/core'
+import { Attribute, Tracked } from '@refarm/runtime/core'
 
 export class Photo {
-  @Property src
-  @Property alt
+  @Attribute src: string
+  @Attribute alt: string
+
+  @Tracked isVisible = false
+
+  onClick () {
+    this.isVisible = true
+  }
 }
