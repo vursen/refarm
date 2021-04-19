@@ -2,8 +2,6 @@
 
 > SSR-first frontend framework for creating fastest websites
 
-## Why I need to learn yet another framework?
-
 ## Roadmap
 
 ### Analyzer
